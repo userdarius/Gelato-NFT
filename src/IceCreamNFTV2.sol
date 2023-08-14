@@ -17,6 +17,9 @@ contract RandomSVGColorNFT is ERC721Enumerable, GelatoVRFConsumer {
     // Mapping from token ID to SVG data
     mapping(uint256 => string) private _svgData;
 
+    // Mapping from token ID to rarity
+    mapping(uint256 => uint256) private _tokenRarities;
+
     constructor(GelatoVRFInbox _inbox, address _dedicatedMsgSender)
         ERC721("RandomSVGColorNFT", "RSCNFT")
     {
@@ -33,6 +36,9 @@ contract RandomSVGColorNFT is ERC721Enumerable, GelatoVRFConsumer {
 
         string memory svg = generateSVG(randomness);
         _svgData[tokenId] = svg;
+
+        // Calculate and set the rarity for the token
+        _tokenRarities[tokenId] = calculateRarity(svg);
     }
 
     function mintSVG() public {
@@ -59,12 +65,58 @@ contract RandomSVGColorNFT is ERC721Enumerable, GelatoVRFConsumer {
                             tokenId.toString(),
                             '","description":"A randomized SVG color NFT","image":"',
                             imageURI,
+                            '","rarity":"',
+                            _tokenRarities[tokenId].toString(),
                             '"}'
                         )
                     )
                 )
             )
         );
+    }
+
+    function calculateRarityBasedOnColors(string memory svg) internal view returns (uint256) {
+        uint256 maxRarity = 0;
+
+        string[10] memory colors = [
+            "red",     // 0
+            "green",   // 1
+            "blue",    // 2
+            "yellow",  // 3
+            "pink",    // 4
+            "purple",  // 5
+            "orange",  // 6
+            "cyan",    // 7
+            "magenta", // 8
+            "black"    // 9
+        ];
+
+        for (uint256 i = 0; i < 10; i++) {
+            if (stringsAreEqual(svg, colors[i])) {
+                if (i > maxRarity) {
+                    maxRarity = i;
+                }
+            }
+        }
+        
+        return maxRarity;
+    }
+
+    function stringsAreEqual(string memory _base, string memory _value) internal pure returns (bool) {
+        bytes memory _baseBytes = bytes(_base);
+        bytes memory _valueBytes = bytes(_value);
+
+        if (_baseBytes.length != _valueBytes.length) {
+            return false;
+        }
+
+        for (uint256 i = 0; i < _baseBytes.length; i++) {
+            if (_baseBytes[i] != _valueBytes[i]) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     function generateSVG(uint256 randomness) internal pure returns (string memory) {
