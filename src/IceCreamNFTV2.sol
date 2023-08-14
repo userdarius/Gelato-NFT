@@ -82,70 +82,70 @@ contract RandomSVGColorNFT is ERC721Enumerable, GelatoVRFConsumer {
                 '<defs>',
                 '<pattern id="pppixelate-pattern" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="translate(0 0) scale(40) rotate(0)" shape-rendering="crispEdges">',
                 '<g fill="', colors[0], '">',
-                    <rect width="1" height="1" x="9" y="6"/>
-                    <rect width="1" height="1" x="10" y="6"/>
-                    <rect width="1" height="1" x="8" y="7"/>
-                    <rect width="1" height="1" x="9" y="7"/>
-                    <rect width="1" height="1" x="10" y="7"/>
-                    <rect width="1" height="1" x="8" y="8"/>
-                    <rect width="1" height="1" x="9" y="8"/>
-                    <rect width="1" height="1" x="9" y="9"/>                
+                    '<rect width="1" height="1" x="9" y="6"/>'
+                    '<rect width="1" height="1" x="10" y="6"/>'
+                    '<rect width="1" height="1" x="8" y="7"/>'
+                    '<rect width="1" height="1" x="9" y="7"/>'
+                    '<rect width="1" height="1" x="10" y="7"/>'
+                    '<rect width="1" height="1" x="8" y="8"/>'
+                    '<rect width="1" height="1" x="9" y="8"/>'
+                    '<rect width="1" height="1" x="9" y="9"/>'                
                 '</g>',
                 '<g fill="', colors[1], '">',
-                    <rect width="1" height="1" x="7" y="7"/>
-                    <rect width="1" height="1" x="6" y="8"/>
-                    <rect width="1" height="1" x="7" y="8"/>
-                    <rect width="1" height="1" x="6" y="9"/>
-                    <rect width="1" height="1" x="7" y="9"/>
-                    <rect width="1" height="1" x="8" y="9"/>
+                    '<rect width="1" height="1" x="7" y="7"/>'
+                    '<rect width="1" height="1" x="6" y="8"/>'
+                    '<rect width="1" height="1" x="7" y="8"/>'
+                    '<rect width="1" height="1" x="6" y="9"/>'
+                    '<rect width="1" height="1" x="7" y="9"/>'
+                    '<rect width="1" height="1" x="8" y="9"/>'
                 '</g>',
                 '<g fill="', colors[2], '">',
-                    <rect width="1" height="1" x="11" y="7"/>
-                    <rect width="1" height="1" x="12" y="7"/>
-                    <rect width="1" height="1" x="10" y="8"/>
-                    <rect width="1" height="1" x="11" y="8"/>
-                    <rect width="1" height="1" x="12" y="8"/>
-                    <rect width="1" height="1" x="13" y="8"/>
-                    <rect width="1" height="1" x="10" y="9"/>
-                    <rect width="1" height="1" x="11" y="9"/>
-                    <rect width="1" height="1" x="12" y="9"/>
-                    <rect width="1" height="1" x="13" y="9"/>
+                    '<rect width="1" height="1" x="11" y="7"/>'
+                    '<rect width="1" height="1" x="12" y="7"/>'
+                    '<rect width="1" height="1" x="10" y="8"/>'
+                    '<rect width="1" height="1" x="11" y="8"/>'
+                    '<rect width="1" height="1" x="12" y="8"/>'
+                    '<rect width="1" height="1" x="13" y="8"/>'
+                    '<rect width="1" height="1" x="10" y="9"/>'
+                    '<rect width="1" height="1" x="11" y="9"/>'
+                    '<rect width="1" height="1" x="12" y="9"/>'
+                    '<rect width="1" height="1" x="13" y="9"/>'
                 '</g>',
                 '<g fill="', colors[3], '">',
-                    <rect width="1" height="1" x="6" y="10"/>
-                    <rect width="1" height="1" x="8" y="10"/>
-                    <rect width="1" height="1" x="10" y="10"/>
-                    <rect width="1" height="1" x="12" y="10"/>
-                    <rect width="1" height="1" x="7" y="11"/>
-                    <rect width="1" height="1" x="9" y="11"/>
-                    <rect width="1" height="1" x="11" y="11"/>
-                    <rect width="1" height="1" x="8" y="12"/>
-                    <rect width="1" height="1" x="10" y="12"/>
-                    <rect width="1" height="1" x="9" y="13"/>
-                    <rect width="1" height="1" x="11" y="13"/>
-                    <rect width="1" height="1" x="12" y="12"/>
-                    <rect width="1" height="1" x="10" y="14"/>
-                    <rect width="1" height="1" x="9" y="15"/>
-                    <rect width="1" height="1" x="8" y="14"/>
-                    <rect width="1" height="1" x="10" y="16"/>
+                    '<rect width="1" height="1" x="6" y="10"/>'
+                    '<rect width="1" height="1" x="8" y="10"/>'
+                    '<rect width="1" height="1" x="10" y="10"/>'
+                    '<rect width="1" height="1" x="12" y="10"/>'
+                    '<rect width="1" height="1" x="7" y="11"/>'
+                    '<rect width="1" height="1" x="9" y="11"/>'
+                    '<rect width="1" height="1" x="11" y="11"/>'
+                    '<rect width="1" height="1" x="8" y="12"/>'
+                    '<rect width="1" height="1" x="10" y="12"/>'
+                    '<rect width="1" height="1" x="9" y="13"/>'
+                    '<rect width="1" height="1" x="11" y="13"/>'
+                    '<rect width="1" height="1" x="12" y="12"/>'
+                    '<rect width="1" height="1" x="10" y="14"/>'
+                    '<rect width="1" height="1" x="9" y="15"/>'
+                    '<rect width="1" height="1" x="8" y="14"/>'
+                    '<rect width="1" height="1" x="10" y="16"/>'
                 '</g>',
                 '<g fill="', colors[4], '">',
-                    <rect width="1" height="1" x="7" y="10"/>
-                    <rect width="1" height="1" x="9" y="10"/>
-                    <rect width="1" height="1" x="11" y="10"/>
-                    <rect width="1" height="1" x="13" y="10"/>
-                    <rect width="1" height="1" x="8" y="11"/>
-                    <rect width="1" height="1" x="10" y="11"/>
-                    <rect width="1" height="1" x="12" y="11"/>
-                    <rect width="1" height="1" x="7" y="12"/>
-                    <rect width="1" height="1" x="9" y="12"/>
-                    <rect width="1" height="1" x="11" y="12"/>
-                    <rect width="1" height="1" x="8" y="13"/>
-                    <rect width="1" height="1" x="10" y="13"/>
-                    <rect width="1" height="1" x="9" y="14"/>
-                    <rect width="1" height="1" x="11" y="14"/>
-                    <rect width="1" height="1" x="10" y="15"/>
-                    <rect width="1" height="1" x="9" y="16"/>
+                    '<rect width="1" height="1" x="7" y="10"/>'
+                    '<rect width="1" height="1" x="9" y="10"/>'
+                    '<rect width="1" height="1" x="11" y="10"/>'
+                    '<rect width="1" height="1" x="13" y="10"/>'
+                    '<rect width="1" height="1" x="8" y="11"/>'
+                    '<rect width="1" height="1" x="10" y="11"/>'
+                    '<rect width="1" height="1" x="12" y="11"/>'
+                    '<rect width="1" height="1" x="7" y="12"/>'
+                    '<rect width="1" height="1" x="9" y="12"/>'
+                    '<rect width="1" height="1" x="11" y="12"/>'
+                    '<rect width="1" height="1" x="8" y="13"/>'
+                    '<rect width="1" height="1" x="10" y="13"/>'
+                    '<rect width="1" height="1" x="9" y="14"/>'
+                    '<rect width="1" height="1" x="11" y="14"/>'
+                    '<rect width="1" height="1" x="10" y="15"/>'
+                    '<rect width="1" height="1" x="9" y="16"/>'
                 '</g>',
                 '</pattern>',
                 '</defs>',
