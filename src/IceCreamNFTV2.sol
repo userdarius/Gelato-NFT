@@ -20,9 +20,7 @@ contract RandomSVGColorNFT is ERC721Enumerable, GelatoVRFConsumer {
     // Mapping from token ID to rarity
     mapping(uint256 => uint256) private _tokenRarities;
 
-    constructor(GelatoVRFInbox _inbox, address _dedicatedMsgSender)
-        ERC721("RandomSVGColorNFT", "RSCNFT")
-    {
+    constructor(GelatoVRFInbox _inbox, address _dedicatedMsgSender) ERC721("RandomSVGColorNFT", "RSCNFT") {
         inbox = _inbox;
         dedicatedMsgSender = _dedicatedMsgSender;
     }
@@ -38,19 +36,14 @@ contract RandomSVGColorNFT is ERC721Enumerable, GelatoVRFConsumer {
         _svgData[tokenId] = svg;
 
         // Calculate and set the rarity for the token
-        _tokenRarities[tokenId] = calculateRarity(svg);
+        _tokenRarities[tokenId] = calculateRarityBasedOnColors(svg);
     }
 
     function mintSVG() public {
         inbox.requestRandomness(this, "");
     }
 
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override
-        returns (string memory)
-    {
+    function tokenURI(uint256 tokenId) public view override returns (string memory) {
         string memory svg = _svgData[tokenId];
         string memory base64Svg = Base64.encode(bytes(svg));
         string memory imageURI = string(abi.encodePacked("data:image/svg+xml;base64,", base64Svg));
@@ -75,48 +68,50 @@ contract RandomSVGColorNFT is ERC721Enumerable, GelatoVRFConsumer {
         );
     }
 
-    function calculateRarityBasedOnColors(string memory svg) internal view returns (uint256) {
+    function calculateRarityBasedOnColors(string memory svg) internal pure returns (uint256) {
         uint256 maxRarity = 0;
 
         string[10] memory colors = [
-            "red",     // 0
-            "green",   // 1
-            "blue",    // 2
-            "yellow",  // 3
-            "pink",    // 4
-            "purple",  // 5
-            "orange",  // 6
-            "cyan",    // 7
+            "red", // 0
+            "green", // 1
+            "blue", // 2
+            "yellow", // 3
+            "pink", // 4
+            "purple", // 5
+            "orange", // 6
+            "cyan", // 7
             "magenta", // 8
-            "black"    // 9
+            "black" // 9
         ];
 
         for (uint256 i = 0; i < 10; i++) {
-            if (stringsAreEqual(svg, colors[i])) {
+            if (containsString(svg, colors[i])) {
                 if (i > maxRarity) {
                     maxRarity = i;
                 }
             }
         }
-        
+
         return maxRarity;
     }
 
-    function stringsAreEqual(string memory _base, string memory _value) internal pure returns (bool) {
+    function containsString(string memory _base, string memory _value) internal pure returns (bool) {
         bytes memory _baseBytes = bytes(_base);
         bytes memory _valueBytes = bytes(_value);
 
-        if (_baseBytes.length != _valueBytes.length) {
-            return false;
-        }
-
-        for (uint256 i = 0; i < _baseBytes.length; i++) {
-            if (_baseBytes[i] != _valueBytes[i]) {
-                return false;
+        for (uint256 i = 0; i < _baseBytes.length - _valueBytes.length + 1; i++) {
+            bool found = true;
+            for (uint256 j = 0; j < _valueBytes.length; j++) {
+                if (_baseBytes[i + j] != _valueBytes[j]) {
+                    found = false;
+                    break;
+                }
+            }
+            if (found) {
+                return true;
             }
         }
-
-        return true;
+        return false;
     }
 
     function generateSVG(uint256 randomness) internal pure returns (string memory) {
@@ -131,95 +126,62 @@ contract RandomSVGColorNFT is ERC721Enumerable, GelatoVRFConsumer {
         return string(
             abi.encodePacked(
                 '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">',
-                '<defs>',
+                "<defs>",
                 '<pattern id="pppixelate-pattern" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="translate(0 0) scale(40) rotate(0)" shape-rendering="crispEdges">',
-                '<g fill="', colors[0], '">',
-                    '<rect width="1" height="1" x="9" y="6"/>'
-                    '<rect width="1" height="1" x="10" y="6"/>'
-                    '<rect width="1" height="1" x="8" y="7"/>'
-                    '<rect width="1" height="1" x="9" y="7"/>'
-                    '<rect width="1" height="1" x="10" y="7"/>'
-                    '<rect width="1" height="1" x="8" y="8"/>'
-                    '<rect width="1" height="1" x="9" y="8"/>'
-                    '<rect width="1" height="1" x="9" y="9"/>'                
-                '</g>',
-                '<g fill="', colors[1], '">',
-                    '<rect width="1" height="1" x="7" y="7"/>'
-                    '<rect width="1" height="1" x="6" y="8"/>'
-                    '<rect width="1" height="1" x="7" y="8"/>'
-                    '<rect width="1" height="1" x="6" y="9"/>'
-                    '<rect width="1" height="1" x="7" y="9"/>'
-                    '<rect width="1" height="1" x="8" y="9"/>'
-                '</g>',
-                '<g fill="', colors[2], '">',
-                    '<rect width="1" height="1" x="11" y="7"/>'
-                    '<rect width="1" height="1" x="12" y="7"/>'
-                    '<rect width="1" height="1" x="10" y="8"/>'
-                    '<rect width="1" height="1" x="11" y="8"/>'
-                    '<rect width="1" height="1" x="12" y="8"/>'
-                    '<rect width="1" height="1" x="13" y="8"/>'
-                    '<rect width="1" height="1" x="10" y="9"/>'
-                    '<rect width="1" height="1" x="11" y="9"/>'
-                    '<rect width="1" height="1" x="12" y="9"/>'
-                    '<rect width="1" height="1" x="13" y="9"/>'
-                '</g>',
-                '<g fill="', colors[3], '">',
-                    '<rect width="1" height="1" x="6" y="10"/>'
-                    '<rect width="1" height="1" x="8" y="10"/>'
-                    '<rect width="1" height="1" x="10" y="10"/>'
-                    '<rect width="1" height="1" x="12" y="10"/>'
-                    '<rect width="1" height="1" x="7" y="11"/>'
-                    '<rect width="1" height="1" x="9" y="11"/>'
-                    '<rect width="1" height="1" x="11" y="11"/>'
-                    '<rect width="1" height="1" x="8" y="12"/>'
-                    '<rect width="1" height="1" x="10" y="12"/>'
-                    '<rect width="1" height="1" x="9" y="13"/>'
-                    '<rect width="1" height="1" x="11" y="13"/>'
-                    '<rect width="1" height="1" x="12" y="12"/>'
-                    '<rect width="1" height="1" x="10" y="14"/>'
-                    '<rect width="1" height="1" x="9" y="15"/>'
-                    '<rect width="1" height="1" x="8" y="14"/>'
-                    '<rect width="1" height="1" x="10" y="16"/>'
-                '</g>',
-                '<g fill="', colors[4], '">',
-                    '<rect width="1" height="1" x="7" y="10"/>'
-                    '<rect width="1" height="1" x="9" y="10"/>'
-                    '<rect width="1" height="1" x="11" y="10"/>'
-                    '<rect width="1" height="1" x="13" y="10"/>'
-                    '<rect width="1" height="1" x="8" y="11"/>'
-                    '<rect width="1" height="1" x="10" y="11"/>'
-                    '<rect width="1" height="1" x="12" y="11"/>'
-                    '<rect width="1" height="1" x="7" y="12"/>'
-                    '<rect width="1" height="1" x="9" y="12"/>'
-                    '<rect width="1" height="1" x="11" y="12"/>'
-                    '<rect width="1" height="1" x="8" y="13"/>'
-                    '<rect width="1" height="1" x="10" y="13"/>'
-                    '<rect width="1" height="1" x="9" y="14"/>'
-                    '<rect width="1" height="1" x="11" y="14"/>'
-                    '<rect width="1" height="1" x="10" y="15"/>'
-                    '<rect width="1" height="1" x="9" y="16"/>'
-                '</g>',
-                '</pattern>',
-                '</defs>',
+                '<g fill="',
+                colors[0],
+                '">',
+                '<rect width="1" height="1" x="9" y="6"/>' '<rect width="1" height="1" x="10" y="6"/>'
+                '<rect width="1" height="1" x="8" y="7"/>' '<rect width="1" height="1" x="9" y="7"/>'
+                '<rect width="1" height="1" x="10" y="7"/>' '<rect width="1" height="1" x="8" y="8"/>'
+                '<rect width="1" height="1" x="9" y="8"/>' '<rect width="1" height="1" x="9" y="9"/>' "</g>",
+                '<g fill="',
+                colors[1],
+                '">',
+                '<rect width="1" height="1" x="7" y="7"/>' '<rect width="1" height="1" x="6" y="8"/>'
+                '<rect width="1" height="1" x="7" y="8"/>' '<rect width="1" height="1" x="6" y="9"/>'
+                '<rect width="1" height="1" x="7" y="9"/>' '<rect width="1" height="1" x="8" y="9"/>' "</g>",
+                '<g fill="',
+                colors[2],
+                '">',
+                '<rect width="1" height="1" x="11" y="7"/>' '<rect width="1" height="1" x="12" y="7"/>'
+                '<rect width="1" height="1" x="10" y="8"/>' '<rect width="1" height="1" x="11" y="8"/>'
+                '<rect width="1" height="1" x="12" y="8"/>' '<rect width="1" height="1" x="13" y="8"/>'
+                '<rect width="1" height="1" x="10" y="9"/>' '<rect width="1" height="1" x="11" y="9"/>'
+                '<rect width="1" height="1" x="12" y="9"/>' '<rect width="1" height="1" x="13" y="9"/>' "</g>",
+                '<g fill="',
+                colors[3],
+                '">',
+                '<rect width="1" height="1" x="6" y="10"/>' '<rect width="1" height="1" x="8" y="10"/>'
+                '<rect width="1" height="1" x="10" y="10"/>' '<rect width="1" height="1" x="12" y="10"/>'
+                '<rect width="1" height="1" x="7" y="11"/>' '<rect width="1" height="1" x="9" y="11"/>'
+                '<rect width="1" height="1" x="11" y="11"/>' '<rect width="1" height="1" x="8" y="12"/>'
+                '<rect width="1" height="1" x="10" y="12"/>' '<rect width="1" height="1" x="9" y="13"/>'
+                '<rect width="1" height="1" x="11" y="13"/>' '<rect width="1" height="1" x="12" y="12"/>'
+                '<rect width="1" height="1" x="10" y="14"/>' '<rect width="1" height="1" x="9" y="15"/>'
+                '<rect width="1" height="1" x="8" y="14"/>' '<rect width="1" height="1" x="10" y="16"/>' "</g>",
+                '<g fill="',
+                colors[4],
+                '">',
+                '<rect width="1" height="1" x="7" y="10"/>' '<rect width="1" height="1" x="9" y="10"/>'
+                '<rect width="1" height="1" x="11" y="10"/>' '<rect width="1" height="1" x="13" y="10"/>'
+                '<rect width="1" height="1" x="8" y="11"/>' '<rect width="1" height="1" x="10" y="11"/>'
+                '<rect width="1" height="1" x="12" y="11"/>' '<rect width="1" height="1" x="7" y="12"/>'
+                '<rect width="1" height="1" x="9" y="12"/>' '<rect width="1" height="1" x="11" y="12"/>'
+                '<rect width="1" height="1" x="8" y="13"/>' '<rect width="1" height="1" x="10" y="13"/>'
+                '<rect width="1" height="1" x="9" y="14"/>' '<rect width="1" height="1" x="11" y="14"/>'
+                '<rect width="1" height="1" x="10" y="15"/>' '<rect width="1" height="1" x="9" y="16"/>' "</g>",
+                "</pattern>",
+                "</defs>",
                 '<rect width="100%" height="100%" fill="url(#pppixelate-pattern)"/>',
-                '</svg>'
+                "</svg>"
             )
         );
     }
 
     function randomColor(uint256 randomness, uint256 offset) private pure returns (string memory) {
-        string[10] memory colors = [
-            "red",
-            "green",
-            "blue",
-            "yellow",
-            "pink",
-            "purple",
-            "orange",
-            "cyan",
-            "magenta",
-            "black"
-        ];
+        string[10] memory colors =
+            ["red", "green", "blue", "yellow", "pink", "purple", "orange", "cyan", "magenta", "black"];
         uint256 index = (uint256(keccak256(abi.encodePacked(randomness, offset))) % 10);
         return colors[index];
     }
